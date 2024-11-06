@@ -1,0 +1,62 @@
+{% load i18n static admin_adminlte %}
+
+<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+    <!-- Add icons to the links using the .nav-icon class
+           with font-awesome or any other icon font library -->
+
+    {% admin_get_menu as app_list %}
+    {% if app_list %}
+    {% for app in app_list %}
+    {% if app.has_perms and not app.pinned %}
+
+      {% if app.models %}
+      <ul class="nav nav-treeview">
+        {% for model in app.models %}
+        {% if model.url %}
+        <li class="nav-item">
+          <a class="nav-link {% if 'bootstrap-tables' in segment or model.url in request.path|urlencode %} active {% endif %}"
+            href="{{ model.url }}">
+            <i class="far fa-circle nav-icon"></i>
+            <p>{{ model.label }}</p>
+          </a>
+        </li>
+        {% else %}
+        <li class="nav-item">{{ model.label }}</li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </li>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+
+    <!-- propostas -->
+
+    <li class="nav-item">
+      <a href="{% url 'lista_propostas' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
+        <i class="nav-icon fas fa-file"></i>
+        <p>
+          Propostas de Lei
+        </p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="{% url 'lista_votacoes' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
+        <i class="nav-icon fas fa-file"></i>
+        <p>
+          Protocolos
+        </p>
+      </a>
+    </li>
+      <li class="nav-item">
+        <a href="{% url 'lista_status_votacoes' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
+          <i class="nav-icon fas fa-file"></i>
+          <p>
+            Etapas Propostas
+          </p>
+        </a>
+      </li>
+
+    
+  </ul>

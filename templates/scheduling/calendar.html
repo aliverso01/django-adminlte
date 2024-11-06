@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Agendamento</h1>
+    <div id="calendar"></div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'fullcalendar/main.js' %}"></script>
+<script src="{% static 'fullcalendar/locales/pt-br.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            locale: 'pt-br',
+            initialView: 'dayGridMonth',
+            editable: true,
+            droppable: true,
+            events: '{% url "event_data" %}',  // URL para carregar eventos
+
+            // Evento disparado ao clicar em uma data
+            dateClick: function(info) {
+                var title = prompt('Título do Evento:');
+                var color = prompt('Digite a cor (formato hex, ex: #3788d8):');
+                if (title) {
+                    var newEvent = {
+                        title: title,
+                        start: info.dateStr,
+                        end: info.dateStr,
+                        backgroundColor: color || '#3788d8',
+                        borderColor: color || '#3788d8',
+                        textColor: '#ffffff'
+                    };
+                    calendar.addEvent(newEvent);
+
+                    // Envio do evento ao backend para salvar
+                    fetch("{% url 'create_event' %}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify(newEvent)
+                    }).then(response => response.json())
+                      .then(data => {
+                          if (data.status === 'success') {
+                              alert('Evento criado com sucesso!');
+                          }
+                      });
+                }
+            },
+
+            // Evento disparado ao arrastar e soltar um evento
+            eventDrop: function(info) {
+                var eventData = {
+                    id: info.event.id,
+                    title: info.event.title,
+                    start: info.event.start.toISOString(),
+                    end: info.event.end ? info.event.end.toISOString() : null,
+                    backgroundColor: info.event.backgroundColor,
+                    borderColor: info.event.borderColor,
+                    textColor: info.event.textColor
+                };
+
+                // Envio do evento ao backend para atualizar
+                fetch("{% url 'update_event' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify(eventData)
+                }).then(response => response.json())
+                  .then(data => {
+                      if (data.status === 'success') {
+                          alert('Evento atualizado com sucesso!');
+                      }
+                  });
+            },
+
+            // Evento disparado ao redimensionar um evento
+            eventResize: function(info) {
+                var eventData = {
+                    id: info.event.id,
+                    title: info.event.title,
+                    start: info.event.start.toISOString(),
+                    end: info.event.end ? info.event.end.toISOString() : null,
+                    backgroundColor: info.event.backgroundColor,
+                    borderColor: info.event.borderColor,
+                    textColor: info.event.textColor
+                };
+
+                // Envio do evento ao backend para atualizar
+                fetch("{% url 'update_event' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify(eventData)
+                }).then(response => response.json())
+                  .then(data => {
+                      if (data.status === 'success') {
+                          alert('Evento atualizado com sucesso!');
+                      }
+                  });
+            },
+
+            // Evento disparado ao clicar em um evento
+            eventClick: function(info) {
+                if (confirm('Deseja deletar este evento?')) {
+                    // Envio do evento ao backend para deletar
+                    fetch("{% url 'delete_event' %}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify({ id: info.event.id })
+                    }).then(response => response.json())
+                      .then(data => {
+                          if (data.status === 'success') {
+                              info.event.remove();
+                              alert('Evento deletado com sucesso!');
+                          }
+                      });
+                }
+            }
+        });
+        calendar.render();
+    });
+</script>
+{% endblock %}

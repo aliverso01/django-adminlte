@@ -1,0 +1,50 @@
+<!-- propostas/templates/propostas/lista_propostas.html -->
+{% extends "base.html" %}
+
+{% block title %}Propostas de Lei{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="mb-0">Propostas de Lei</h1>
+        <a href="{% url 'nova_proposta' %}" class="btn btn-primary">Nova Proposta</a>
+    </div>
+    <table id="propostasTable" class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Data de Criação</th>
+                <th>Ações</th>
+            </tr>   
+        </thead>
+        <tbody>
+            {% for proposta in propostas %}
+            <tr>
+                <td>{{ proposta.titulo }}</td>
+                <td>{{ proposta.data_criacao }}</td>
+                <td>
+                    <a href="{% url 'edita_proposta' proposta.pk %}" class="btn btn-warning btn-sm">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                    <a href="{% url 'deleta_proposta' proposta.pk %}" class="btn btn-danger btn-sm">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                    <button onclick="printProposta({{ proposta.pk }})" class="btn btn-secondary btn-sm">
+                        <i class="bi bi-printer"></i>
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function printProposta(propostaId) {
+        var printWindow = window.open("{% url 'imprime_proposta' 0 %}".replace('0', propostaId), '_blank');
+        printWindow.onload = function() {
+            printWindow.print();
+        };
+    }
+</script>
+{% endblock %}

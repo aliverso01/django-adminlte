@@ -1,0 +1,41 @@
+<!-- votacao/templates/votacao/visualiza_votacao.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Visualizar Votação{% endblock title %}
+
+{% block content %}
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Visualizar Votação</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Início</a></li>
+                        <li class="breadcrumb-item active">Visualizar Votação</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Detalhes da Votação</h3>
+                </div>
+                <div class="card-body">
+                    <p><strong>Proposta:</strong> {{ votacao.proposta.titulo }}</p>
+                    <p><strong>Status:</strong> {{ votacao.status.status }}</p>
+                    <p><strong>Data de Criação:</strong> {{ votacao.created_at }}</p>
+                    <p><strong>Última Atualização:</strong> {{ votacao.updated_at }}</p>
+                    <p><strong>Usuário:</strong> {{ votacao.user.get_full_name }}</p>
+                    <a href="{% url 'lista_votacoes' %}" class="btn btn-secondary">Voltar</a>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

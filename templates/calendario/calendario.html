@@ -1,0 +1,330 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Calendário{% endblock title %}
+
+{% block extrastyle %}
+  <link rel="stylesheet" href="{% static 'plugins/fullcalendar/main.css' %}">
+{% endblock extrastyle %}
+
+{% block bodyclass %}hold-transition sidebar-mini{% endblock bodyclass %}
+
+{% block content %}
+<div class="content-wrapper">
+  <!-- Content Header -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Calendário</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Início</a></li>
+            <li class="breadcrumb-item active">Calendário</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Etiquetas -->
+        <div class="col-md-3">
+          <div class="sticky-top mb-3">
+            <div class="card">
+              <div class="card-header">
+                <h4 class="card-title">Etiquetas</h4>
+              </div>
+              <div class="card-body">
+                <div id="external-events">
+                  {% for etiqueta in draggable_events %}
+                    <div class="external-event" 
+                         style="background-color: {{ etiqueta.cor }}; border-color: {{ etiqueta.cor }}; color: #fff;" 
+                         data-id="{{ etiqueta.id }}">
+                      {{ etiqueta.nome }}
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Criar Etiqueta</h3>
+              </div>
+              <div class="card-body">
+                <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
+                  <ul class="fc-color-picker" id="color-chooser">
+                    <li><a class="text-primary" href="#"><i class="fas fa-square"></i></a></li>
+                    <li><a class="text-warning" href="#"><i class="fas fa-square"></i></a></li>
+                    <li><a class="text-success" href="#"><i class="fas fa-square"></i></a></li>
+                    <li><a class="text-danger" href="#"><i class="fas fa-square"></i></a></li>
+                    <li><a class="text-muted" href="#"><i class="fas fa-square"></i></a></li>
+                  </ul>
+                </div>
+                <div class="input-group">
+                  <input id="new-label" type="text" class="form-control" placeholder="Título da Etiqueta">
+                  <div class="input-group-append">
+                    <button id="add-new-label" type="button" class="btn btn-primary">Adicionar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calendar Column -->
+        <div class="col-md-9">
+          <div class="card card-primary">
+            <div class="card-body p-0">
+              <div id="calendar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Modal para Criação/Edição de Eventos -->
+<div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="eventModalLabel">Detalhes do Evento</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <form id="eventForm">
+            <input type="hidden" id="eventId">
+            <div class="mb-3">
+              <label for="eventAgenda" class="form-label">Nome da Agenda</label>
+              <input type="text" class="form-control" id="eventAgenda" required>
+            </div>
+            <div class="mb-3">
+              <label for="eventEtiqueta" class="form-label">Etiqueta</label>
+              <select class="form-control" id="eventEtiqueta" required>
+                {% for etiqueta in draggable_events %}
+                  <option value="{{ etiqueta.id }}">{{ etiqueta.nome }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="eventDate" class="form-label">Data</label>
+              <input type="date" class="form-control" id="eventDate" required>
+            </div>
+            <div class="mb-3">
+              <label for="eventTime" class="form-label">Hora</label>
+              <input type="time" class="form-control" id="eventTime" required>
+            </div>
+            <div class="mb-3">
+              <label for="eventLocation" class="form-label">Local</label>
+              <input type="text" class="form-control" id="eventLocation">
+            </div>
+            <div class="mb-3">
+              <label for="eventWith" class="form-label">Com Quem</label>
+              <input type="text" class="form-control" id="eventWith">
+            </div>
+            <div class="mb-3">
+              <label for="eventInformacoes" class="form-label">Informações Adicionais</label>
+              <textarea class="form-control" id="eventInformacoes" rows="3"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger d-none" id="deleteEventBtn">Excluir Evento</button>
+          <button type="button" class="btn btn-primary" id="saveEventBtn">Salvar Evento</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+{% endblock content %}
+
+{% block extra_scripts %}
+<script src="{% static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+<script src="{% static 'plugins/moment/moment.min.js' %}"></script>
+<script src="{% static 'plugins/fullcalendar/main.js' %}"></script>
+<script src="{% static 'plugins/fullcalendar/locales/pt-br.js' %}"></script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+    
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            locale: 'pt-br',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            themeSystem: 'bootstrap',
+            editable: true,
+            events: '/calendario/carregar_eventos/',
+            eventClick: function(info) {
+                var event = info.event;
+                $('#eventId').val(event.id);
+                $('#eventAgenda').val(event.title);
+                $('#eventEtiqueta').val(event.extendedProps.etiqueta_id);
+                $('#eventDate').val(event.startStr.split('T')[0]);
+                $('#eventTime').val(event.startStr.split('T')[1]?.slice(0, 5));
+                $('#eventLocation').val(event.extendedProps.local || '');
+                $('#eventWith').val(event.extendedProps.com_quem || '');
+                $('#eventInformacoes').val(event.extendedProps.informacoes || '');
+                $('#deleteEventBtn').removeClass('d-none');
+                $('#eventModal').modal('show');
+            }
+        });
+    
+        calendar.render();
+    
+        function ini_etiquetas(ele) {
+            ele.each(function() {
+                $(this).on('click', function() {
+                    var etiquetaId = $(this).data('id');
+                    $('#eventEtiqueta').val(etiquetaId);
+                    $('#eventAgenda').val('');
+                    $('#eventDate').val('');
+                    $('#eventTime').val('');
+                    $('#eventLocation').val('');
+                    $('#eventWith').val('');
+                    $('#eventInformacoes').val('');
+                    $('#eventId').val('');
+                    $('#deleteEventBtn').addClass('d-none');
+                    $('#eventModal').modal('show');
+                });
+            });
+        }
+    
+        ini_etiquetas($('#external-events div.external-event'));
+    
+        $('#saveEventBtn').click(function() {
+            var eventId = $('#eventId').val();
+            var agenda = $('#eventAgenda').val();
+            var etiquetaId = $('#eventEtiqueta').val();
+            var eventDate = $('#eventDate').val();
+            var eventTime = $('#eventTime').val();
+            var eventLocation = $('#eventLocation').val();
+            var eventWith = $('#eventWith').val();
+            var informacoes = $('#eventInformacoes').val();
+            var url = eventId ? '/calendario/editar_evento/' : '/calendario/adicionar_evento/';
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({
+                    id: eventId,
+                    agenda: agenda,
+                    etiqueta_id: etiquetaId,
+                    data: eventDate,
+                    hora: eventTime,
+                    local: eventLocation,
+                    com_quem: eventWith,
+                    informacoes: informacoes
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    calendar.refetchEvents();
+                    $('#eventModal').modal('hide');
+                } else {
+                    alert('Erro ao salvar evento: ' + data.message);
+                }
+            });
+        });
+    
+        $('#deleteEventBtn').click(function() {
+            var eventId = $('#eventId').val();
+            fetch('/calendario/deletar_evento/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({ id: eventId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    calendar.refetchEvents();
+                    $('#eventModal').modal('hide');
+                } else {
+                    alert('Erro ao excluir evento: ' + data.message);
+                }
+            });
+        });
+    
+        $('#add-new-label').click(function() {
+            var nome = $('#new-label').val();
+            if (!nome) return alert('O nome da etiqueta é obrigatório.');
+    
+            fetch('/calendario/criar_etiqueta/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({
+                    nome: nome,
+                    cor: currColor
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    var etiqueta = $('<div />');
+                    etiqueta.css({
+                        'background-color': data.cor,
+                        'border-color': data.cor,
+                        'color': '#fff'
+                    }).addClass('external-event');
+                    etiqueta.text(data.nome);
+                    etiqueta.data('id', data.id);
+                    $('#external-events').prepend(etiqueta);
+                    ini_etiquetas(etiqueta);
+                    $('#new-label').val('');
+                } else {
+                    alert('Erro ao criar etiqueta: ' + data.message);
+                }
+            });
+        });
+    
+        var currColor = '#3c8dbc';
+        $('#color-chooser > li > a').click(function(e) {
+            e.preventDefault();
+            currColor = $(this).css('color');
+            $('#add-new-label').css({
+                'background-color': currColor,
+                'border-color': currColor
+            });
+        });
+    
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    });
+    </script>
+    
+    
+
+    
+{% endblock extra_scripts %}

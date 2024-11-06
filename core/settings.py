@@ -55,7 +55,20 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     "home",
+    "propostas",
+    "votacao",
+    "calendario",
+    'django_summernote',
+    'crispy_forms',
+    'crispy_bootstrap4',
+
+
 ]
+
+AUTH_USER_MODEL = 'home.CustomUser'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -138,13 +151,16 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "pt-br"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "America/Fortaleza"
 
 USE_I18N = True
 

@@ -1,0 +1,13 @@
+<!-- propostas/templates/propostas/visualiza_proposta.html -->
+{% extends "base.html" %}
+
+{% block title %}Visualizar Proposta{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>{{ proposta.titulo }}</h1>
+    <p>{{ proposta.descricao }}</p>
+    <p>Data de Criação: {{ proposta.data_criacao }}</p>
+    <a href="{% url 'lista_propostas' %}" class="btn btn-primary">Voltar</a>
+</div>
+{% endblock %}

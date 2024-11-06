@@ -1,0 +1,116 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Atualizar Perfil{% endblock title %}
+
+{% block bodyclass %}hold-transition sidebar-mini{% endblock bodyclass %}
+
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Atualizar Perfil</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Início</a></li>
+                        <li class="breadcrumb-item active">Atualizar Perfil</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+                    <!-- Profile Image -->
+                    <div class="card card-primary card-outline">
+                        <div class="card-body box-profile">
+                            <div class="text-center">
+                                {% if user.photo %}
+                                    <img class="profile-user-img img-fluid img-circle"
+                                         src="{{ user.photo.url }}"
+                                         alt="Foto do perfil do usuário">
+                                {% else %}
+                                    <i class="fas fa-user-circle fa-5x"></i>
+                                {% endif %}
+                            </div>
+
+                            <h3 class="profile-username text-center">{{ user.get_full_name }}</h3>
+
+                            <p class="text-muted text-center">{{ user.occupation }}</p>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+                <div class="col-md-9">
+                    <div class="card">
+                        <div class="card-header p-2">
+                            <h3 class="card-title">Atualize Seu Perfil</h3>
+                        </div><!-- /.card-header -->
+                        <div class="card-body">
+                            <form class="form-horizontal" method="post" action="{% url 'update_profile' %}" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="form-group row">
+                                    <label for="inputUsername" class="col-sm-2 col-form-label">Nome de Usuário</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="inputUsername" name="username" value="{{ form.username.value }}" placeholder="Nome de Usuário">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputFirstName" class="col-sm-2 col-form-label">Nome</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="inputFirstName" name="first_name" value="{{ form.first_name.value }}" placeholder="Nome">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputLastName" class="col-sm-2 col-form-label">Sobrenome</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="inputLastName" name="last_name" value="{{ form.last_name.value }}" placeholder="Sobrenome">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+                                    <div class="col-sm-10">
+                                        <input type="email" class="form-control" id="inputEmail" name="email" value="{{ form.email.value }}" placeholder="Email">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputPhoto" class="col-sm-2 col-form-label">Foto</label>
+                                    <div class="col-sm-10">
+                                        <input type="file" class="form-control" id="inputPhoto" name="photo">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputOccupation" class="col-sm-2 col-form-label">Cargo</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="inputOccupation" name="occupation" value="{{ form.occupation.value }}" placeholder="Cargo">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="offset-sm-2 col-sm-10">
+                                        <button type="submit" class="btn btn-danger">Salvar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div><!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+{% endblock content %}

@@ -15,9 +15,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from propostas import views
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
     path('', include('home.urls')),
     path("admin/", admin.site.urls),
-    path("", include('admin_adminlte.urls'))
+    path("", include('admin_adminlte.urls')),
+    path('propostas/', include('propostas.urls')),
+    path('summernote/', include('django_summernote.urls')),
+    path('votacao/', include('votacao.urls')),
+    path('calendario/', include('calendario.urls')),
+
+
+
 ]

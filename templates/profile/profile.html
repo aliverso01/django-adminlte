@@ -1,0 +1,124 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Perfil do Usuário{% endblock title %}
+
+{% block bodyclass %}hold-transition sidebar-mini{% endblock bodyclass %}
+
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Perfil</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Início</a></li>
+                        <li class="breadcrumb-item active">Perfil do Usuário</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+                    <!-- Profile Image -->
+                    <div class="card card-primary card-outline">
+                        <div class="card-body box-profile">
+                            <div class="text-center">
+                                {% if user.photo %}
+                                    <img class="profile-user-img img-fluid img-circle"
+                                         src="{{ user.photo.url }}"
+                                         alt="Foto do perfil do usuário">
+                                {% else %}
+                                    <i class="fas fa-user-circle fa-5x"></i>
+                                {% endif %}
+                            </div>
+
+                            <h3 class="profile-username text-center">{{ user.get_full_name }}</h3>
+
+                            <p class="text-muted text-center">{{ user.occupation }}</p>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+                <div class="col-md-9">
+                    <div class="card">
+                        <div class="card-header p-2">
+                            <ul class="nav nav-pills">
+                                <li class="nav-item"><a class="nav-link active" href="#settings" data-toggle="tab">Configurações</a></li>
+                            </ul>
+                        </div><!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="tab-content">
+                                <div class="active tab-pane" id="settings">
+                                    <form class="form-horizontal" method="post" action="{% url 'update_profile' %}" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="form-group row">
+                                            <label for="inputUsername" class="col-sm-2 col-form-label">Nome de Usuário</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="inputUsername" name="username" value="{{ user.username }}" placeholder="Nome de Usuário" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="inputFirstName" class="col-sm-2 col-form-label">Nome</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="inputFirstName" name="first_name" value="{{ user.first_name }}" placeholder="Nome" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="inputLastName" class="col-sm-2 col-form-label">Sobrenome</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="inputLastName" name="last_name" value="{{ user.last_name }}" placeholder="Sobrenome" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+                                            <div class="col-sm-10">
+                                                <input type="email" class="form-control" id="inputEmail" name="email" value="{{ user.email }}" placeholder="Email" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="inputPhoto" class="col-sm-2 col-form-label">Foto</label>
+                                            <div class="col-sm-10">
+                                                <input type="file" class="form-control" id="inputPhoto" name="photo" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="inputOccupation" class="col-sm-2 col-form-label">Cargo</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="inputOccupation" name="occupation" value="{{ user.occupation }}" placeholder="Cargo" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="offset-sm-2 col-sm-10">
+                                                <button type="submit" class="btn btn-danger">Editar</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!-- /.tab-pane -->
+                            </div>
+                            <!-- /.tab-content -->
+                        </div><!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+{% endblock content %}

@@ -1,0 +1,304 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %} Calendário {% endblock title %}
+
+{% block extrastyle %}
+  <!-- fullCalendar -->
+  <link rel="stylesheet" href="{% static 'plugins/fullcalendar/main.css' %}">
+{% endblock extrastyle %}
+
+{% block bodyclass %} hold-transition sidebar-mini {% endblock bodyclass %}
+
+{% block content %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Calendário</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Início</a></li>
+              <li class="breadcrumb-item active">Calendário</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="sticky-top mb-3">
+              <div class="card">
+                <div class="card-header">
+                  <h4 class="card-title">Eventos Arrastáveis</h4>
+                </div>
+                <div class="card-body">
+                  <!-- the events -->
+                  <div id="external-events">
+                    <div class="external-event bg-success">Almoço</div>
+                    <div class="external-event bg-warning">Ir para casa</div>
+                    <div class="external-event bg-info">Fazer lição de casa</div>
+                    <div class="external-event bg-primary">Trabalhar no design UI</div>
+                    <div class="external-event bg-danger">Dormir bem</div>
+                    <div class="checkbox">
+                      <label for="drop-remove">
+                        <input type="checkbox" id="drop-remove">
+                        remover após soltar
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Criar Evento</h3>
+                </div>
+                <div class="card-body">
+                  <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
+                    <ul class="fc-color-picker" id="color-chooser">
+                      <li><a class="text-primary" href="#"><i class="fas fa-square"></i></a></li>
+                      <li><a class="text-warning" href="#"><i class="fas fa-square"></i></a></li>
+                      <li><a class="text-success" href="#"><i class="fas fa-square"></i></a></li>
+                      <li><a class="text-danger" href="#"><i class="fas fa-square"></i></a></li>
+                      <li><a class="text-muted" href="#"><i class="fas fa-square"></i></a></li>
+                    </ul>
+                  </div>
+                  <!-- /btn-group -->
+                  <div class="input-group">
+                    <input id="new-event" type="text" class="form-control" placeholder="Título do Evento">
+
+                    <div class="input-group-append">
+                      <button id="add-new-event" type="button" class="btn btn-primary">Adicionar</button>
+                    </div>
+                    <!-- /btn-group -->
+                  </div>
+                  <!-- /input-group -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-md-9">
+            <div class="card card-primary">
+              <div class="card-body p-0">
+                <!-- THE CALENDAR -->
+                <div id="calendar"></div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+{% endblock content %}
+
+{% block extra_scripts %}
+  <!-- jQuery UI -->
+  <script src="{% static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+  <!-- fullCalendar 2.2.5 -->
+  <script src="{% static 'plugins/moment/moment.min.js' %}"></script>
+  <script src="{% static 'plugins/fullcalendar/main.js' %}"></script>
+  <script src="{% static 'plugins/fullcalendar/locales/pt-br.js' %}"></script>
+
+  <!-- Page specific script -->
+  <script>
+    $(function () {
+      /* initialize the external events
+      -----------------------------------------------------------------*/
+      function ini_events(ele) {
+        ele.each(function () {
+          var eventObject = {
+            title: $.trim($(this).text()) // use the element's text as the event title
+          }
+
+          $(this).data('eventObject', eventObject)
+
+          $(this).draggable({
+            zIndex        : 1070,
+            revert        : true, // will cause the event to go back to its
+            revertDuration: 0  //  original position after the drag
+          })
+        })
+      }
+
+      ini_events($('#external-events div.external-event'))
+
+      /* initialize the calendar
+      -----------------------------------------------------------------*/
+      var Calendar = FullCalendar.Calendar;
+      var Draggable = FullCalendar.Draggable;
+
+      var containerEl = document.getElementById('external-events');
+      var checkbox = document.getElementById('drop-remove');
+      var calendarEl = document.getElementById('calendar');
+
+      new Draggable(containerEl, {
+        itemSelector: '.external-event',
+        eventData: function(eventEl) {
+          return {
+            title: eventEl.innerText,
+            backgroundColor: window.getComputedStyle( eventEl ,null).getPropertyValue('background-color'),
+            borderColor: window.getComputedStyle( eventEl ,null).getPropertyValue('background-color'),
+            textColor: window.getComputedStyle( eventEl ,null).getPropertyValue('color'),
+          };
+        }
+      });
+
+      var calendar = new Calendar(calendarEl, {
+        locale: 'pt-br',
+        headerToolbar: {
+          left  : 'prev,next today',
+          center: 'title',
+          right : 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        themeSystem: 'bootstrap',
+        events: '/eventos/', // URL para buscar eventos do backend
+        editable  : true,
+        droppable : true, // this allows things to be dropped onto the calendar !!!
+        drop      : function(info) {
+          var eventData = {
+            title: info.draggedEl.innerText,
+            start: info.dateStr,
+            all_day: info.allDay,
+            background_color: window.getComputedStyle(info.draggedEl, null).getPropertyValue('background-color'),
+            border_color: window.getComputedStyle(info.draggedEl, null).getPropertyValue('background-color'),
+            text_color: window.getComputedStyle(info.draggedEl, null).getPropertyValue('color')
+          };
+
+          $.ajax({
+            url: '/eventos/novo/',
+            method: 'POST',
+            data: eventData,
+            success: function(response) {
+              info.draggedEl.remove(); // Remove the element from the "Draggable Events" list
+              calendar.addEvent({
+                id: response.id,
+                title: eventData.title,
+                start: eventData.start,
+                allDay: eventData.all_day,
+                backgroundColor: eventData.background_color,
+                borderColor: eventData.border_color,
+                textColor: eventData.text_color
+              });
+            }
+          });
+        },
+        eventReceive: function(info) {
+          var eventData = {
+            title: info.event.title,
+            start: info.event.start.toISOString(),
+            end: info.event.end ? info.event.end.toISOString() : null,
+            all_day: info.event.allDay,
+            background_color: info.event.backgroundColor,
+            border_color: info.event.borderColor,
+            text_color: info.event.textColor
+          };
+
+          $.ajax({
+            url: '/eventos/novo/',
+            method: 'POST',
+            data: eventData,
+            success: function(response) {
+              info.event.setProp('id', response.id);
+            }
+          });
+        },
+        eventDrop: function(info) {
+          var eventData = {
+            id: info.event.id,
+            title: info.event.title,
+            start: info.event.start.toISOString(),
+            end: info.event.end ? info.event.end.toISOString() : null,
+            all_day: info.event.allDay,
+            background_color: info.event.backgroundColor,
+            border_color: info.event.borderColor,
+            text_color: info.event.textColor
+          };
+
+          $.ajax({
+            url: '/eventos/editar/' + info.event.id + '/',
+            method: 'POST',
+            data: eventData
+          });
+        },
+        eventResize: function(info) {
+          var eventData = {
+            id: info.event.id,
+            title: info.event.title,
+            start: info.event.start.toISOString(),
+            end: info.event.end ? info.event.end.toISOString() : null,
+            all_day: info.event.allDay,
+            background_color: info.event.backgroundColor,
+            border_color: info.event.borderColor,
+            text_color: info.event.textColor
+          };
+
+          $.ajax({
+            url: '/eventos/editar/' + info.event.id + '/',
+            method: 'POST',
+            data: eventData
+          });
+        },
+        eventClick: function(info) {
+          if (confirm('Deseja deletar este evento?')) {
+            $.ajax({
+              url: '/eventos/deletar/' + info.event.id + '/',
+              method: 'POST',
+              success: function() {
+                info.event.remove();
+              }
+            });
+          }
+        }
+      });
+
+      calendar.render();
+
+      var currColor = '#3c8dbc' //Red by default
+      $('#color-chooser > li > a').click(function (e) {
+        e.preventDefault()
+        currColor = $(this).css('color')
+        $('#add-new-event').css({
+          'background-color': currColor,
+          'border-color'    : currColor
+        })
+      })
+      $('#add-new-event').click(function (e) {
+        e.preventDefault()
+        var val = $('#new-event').val()
+        if (val.length == 0) {
+          return
+        }
+
+        var event = $('<div />')
+        event.css({
+          'background-color': currColor,
+          'border-color'    : currColor,
+          'color'           : '#fff'
+        }).addClass('external-event')
+        event.text(val)
+        $('#external-events').prepend(event)
+
+        ini_events(event)
+
+        $('#new-event').val('')
+      })
+    })
+  </script>
+{% endblock extra_scripts %}

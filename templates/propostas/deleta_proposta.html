@@ -1,0 +1,16 @@
+<!-- propostas/templates/propostas/deleta_proposta.html -->
+{% extends "base.html" %}
+
+{% block title %}Deletar Proposta{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Deletar Proposta</h1>
+    <p>Tem certeza de que deseja deletar a proposta "{{ proposta.titulo }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Deletar</button>
+        <a href="{% url 'lista_propostas' %}" class="btn btn-primary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}
