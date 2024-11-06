@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalhes da Prestação de Contas{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Prestação de Contas: {{ prestacao_contas.periodo }}</h2>
+  <p><strong>Total Receitas:</strong> R$ {{ prestacao_contas.total_receitas }}</p>
+  <p><strong>Total Despesas:</strong> R$ {{ prestacao_contas.total_despesas }}</p>
+  <p><strong>Data de Envio:</strong> {{ prestacao_contas.data_envio }}</p>
+  <a href="{% url 'financeiro:lista_prestacoes_contas' %}" class="btn btn-secondary">Voltar</a>
+</div>
+{% endblock content %}

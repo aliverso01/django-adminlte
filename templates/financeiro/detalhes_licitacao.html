@@ -1,0 +1,47 @@
+<!-- financeiro/templates/financeiro/detalhes_licitacao.html -->
+{% extends 'layouts/base.html' %}
+
+{% block title %}Detalhes da Licitação{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Detalhes da Licitação</h1>
+    <a href="{% url 'financeiro:lista_licitacoes' %}" class="btn btn-secondary mb-3">Voltar</a>
+
+    <h3>Informações da Licitação</h3>
+    <p><strong>Descrição:</strong> {{ licitacao.descricao }}</p>
+    <p><strong>Data de Abertura:</strong> {{ licitacao.data_abertura }}</p>
+    <p><strong>Status:</strong> {{ licitacao.status.nome }}</p>
+
+    {% if licitacao.edital %}
+    <p><strong>Edital:</strong> <a href="{{ licitacao.edital.url }}" download>Baixar Edital</a></p>
+    {% endif %}
+
+    <h3>Contratos Associados</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Fornecedor</th>
+                <th>Data Início</th>
+                <th>Data Fim</th>
+                <th>Valor Total</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for contrato in licitacao.contrato_set.all %}
+            <tr>
+                <td>{{ contrato.fornecedor.nome }}</td>
+                <td>{{ contrato.data_inicio }}</td>
+                <td>{{ contrato.data_fim }}</td>
+                <td>R$ {{ contrato.valor_total }}</td>
+                <td>
+                    <a href="{% url 'financeiro:detalhar_contrato' contrato.id %}" class="btn btn-info btn-sm">Detalhes</a>
+                    <a href="{% url 'financeiro:editar_contrato' contrato.id %}" class="btn btn-warning btn-sm">Editar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

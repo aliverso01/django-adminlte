@@ -1,0 +1,17 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Adicionar/Editar Contrato{% endblock title %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>{% if contrato.id %}Editar Contrato{% else %}Adicionar Contrato{% endif %}</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a href="{% url 'financeiro:lista_contratos' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock content %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Adicionar/Editar Categoria de Despesa{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>{% if object %}Editar{% else %}Adicionar{% endif %} Categoria de Despesa</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success">{% if object %}Salvar Alterações{% else %}Adicionar{% endif %}</button>
+        <a href="{% url 'financeiro:lista_categorias_despesa' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock content %}

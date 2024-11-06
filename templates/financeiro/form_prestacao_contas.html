@@ -1,0 +1,45 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Adicionar/Editar Prestação de Contas{% endblock title %}
+
+{% block content %}
+    <!-- Content Header -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>{% if object %}Editar{% else %}Adicionar{% endif %} Prestação de Contas</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{% url 'financeiro:dashboard_financeiro' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Prestação de Contas</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">{% if object %}Editar{% else %}Adicionar{% endif %} Prestação de Contas</h3>
+                </div>
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <div class="card-body">
+                        {{ form|crispy }}
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                        <a href="{% url 'financeiro:lista_prestacoes_contas' %}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

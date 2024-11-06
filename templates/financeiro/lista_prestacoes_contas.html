@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Prestações de Contas{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Prestações de Contas</h2>
+  <a href="{% url 'financeiro:adicionar_prestacao_contas' %}" class="btn btn-primary mb-3">Adicionar Prestação de Contas</a>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Período</th>
+        <th>Total Receitas</th>
+        <th>Total Despesas</th>
+        <th>Data de Envio</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for prestacao in prestacoes_contas %}
+      <tr>
+        <td>{{ prestacao.periodo }}</td>
+        <td>R$ {{ prestacao.total_receitas }}</td>
+        <td>R$ {{ prestacao.total_despesas }}</td>
+        <td>{{ prestacao.data_envio }}</td>
+        <td>
+          <a href="{% url 'financeiro:detalhar_prestacao_contas' prestacao.id %}" class="btn btn-sm btn-info">Detalhes</a>
+          <a href="{% url 'financeiro:editar_prestacao_contas' prestacao.id %}" class="btn btn-sm btn-warning">Editar</a>
+          <a href="{% url 'financeiro:deletar_prestacao_contas' prestacao.id %}" class="btn btn-sm btn-danger">Excluir</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock content %}

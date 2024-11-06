@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Categorias de Despesa{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Categorias de Despesa</h2>
+  <a href="{% url 'financeiro:adicionar_categoria_despesa' %}" class="btn btn-primary mb-3">Adicionar Categoria</a>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for categoria in categorias_despesa %}
+      <tr>
+        <td>{{ categoria.nome }}</td>
+        <td>
+          <a href="{% url 'financeiro:editar_categoria_despesa' categoria.id %}" class="btn btn-sm btn-warning">Editar</a>
+          <a href="{% url 'financeiro:deletar_categoria_despesa' categoria.id %}" class="btn btn-sm btn-danger">Excluir</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock content %}

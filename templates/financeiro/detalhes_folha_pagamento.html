@@ -1,0 +1,39 @@
+<!-- financeiro/templates/financeiro/detalhes_folha_pagamento.html -->
+{% extends 'layouts/base.html' %}
+
+{% block title %}Detalhes da Folha de Pagamento{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Detalhes da Folha de Pagamento</h1>
+    <a href="{% url 'financeiro:lista_folhas_pagamento' %}" class="btn btn-secondary mb-3">Voltar</a>
+
+    <h3>Resumo</h3>
+    <p><strong>Mês:</strong> {{ folha.mes }}</p>
+    <p><strong>Ano:</strong> {{ folha.ano }}</p>
+    <p><strong>Total Bruto:</strong> R$ {{ folha.total_bruto }}</p>
+    <p><strong>Total Líquido:</strong> R$ {{ folha.total_liquido }}</p>
+
+    <h3>Funcionários</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Salário Bruto</th>
+                <th>Descontos</th>
+                <th>Salário Líquido</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for funcionario in folha.funcionarios.all %}
+            <tr>
+                <td>{{ funcionario.nome }}</td>
+                <td>R$ {{ funcionario.salario_bruto }}</td>
+                <td>R$ {{ funcionario.descontos }}</td>
+                <td>R$ {{ funcionario.salario_liquido }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

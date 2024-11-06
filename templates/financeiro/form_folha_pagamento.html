@@ -1,0 +1,18 @@
+<!-- financeiro/templates/financeiro/form_folha_pagamento.html -->
+{% extends 'layouts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Adicionar/Editar Folha de Pagamento{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>{% if folha.id %}Editar Folha de Pagamento{% else %}Adicionar Folha de Pagamento{% endif %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a href="{% url 'financeiro:lista_folhas_pagamento' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock content %}

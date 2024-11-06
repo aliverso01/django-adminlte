@@ -57,6 +57,22 @@
           </p>
         </a>
       </li>
+      <li class="nav-item">
+        <a href="{% url 'calendario' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
+          <i class="nav-icon fas fa-file"></i>
+          <p>
+            Agenda
+          </p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{% url 'financeiro:dashboard_financeiro' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
+          <i class="nav-icon fas fa-file"></i>
+          <p>
+            Financeiro
+          </p>
+        </a>
+      </li>
 
     
   </ul>

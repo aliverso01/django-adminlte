@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Adicionar/Editar Fonte de Receita{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>{% if object %}Editar Fonte de Receita{% else %}Adicionar Fonte de Receita{% endif %}</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Salvar</button>
+    <a href="{% url 'financeiro:lista_fontes_receita' %}" class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+{% endblock content %}

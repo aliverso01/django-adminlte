@@ -1,0 +1,160 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Dashboard Financeiro{% endblock title %}
+
+{% block extrastyle %}
+  <link rel="stylesheet" href="{% static 'plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
+{% endblock extrastyle %}
+
+{% block bodyclass %}hold-transition sidebar-mini{% endblock bodyclass %}
+
+{% block content %}
+  <!-- Content Header -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Dashboard Financeiro</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Início</a></li>
+            <li class="breadcrumb-item active">Dashboard Financeiro</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Receitas -->
+        <div class="col-lg-3 col-6">
+          <div class="small-box bg-success">
+            <div class="inner">
+              <h3>{{ receitas_count }}</h3>
+              <p>Receitas</p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-coins"></i>
+            </div>
+            <a href="{% url 'financeiro:lista_receitas' %}" class="small-box-footer">Ver todas <i class="fas fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+
+        <!-- Despesas -->
+        <div class="col-lg-3 col-6">
+          <div class="small-box bg-danger">
+            <div class="inner">
+              <h3>{{ despesas_count }}</h3>
+              <p>Despesas</p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-wallet"></i>
+            </div>
+            <a href="{% url 'financeiro:lista_despesas' %}" class="small-box-footer">Ver todas <i class="fas fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+
+        <!-- Folhas de Pagamento -->
+        <div class="col-lg-3 col-6">
+          <div class="small-box bg-primary">
+            <div class="inner">
+              <h3>{{ folhas_pagamento_count }}</h3>
+              <p>Folhas de Pagamento</p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-file-invoice-dollar"></i>
+            </div>
+            <a href="{% url 'financeiro:lista_folhas_pagamento' %}" class="small-box-footer">Ver todas <i class="fas fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+
+        <!-- Licitações -->
+        <div class="col-lg-3 col-6">
+          <div class="small-box bg-warning">
+            <div class="inner">
+              <h3>{{ licitacoes_count }}</h3>
+              <p>Licitações</p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-gavel"></i>
+            </div>
+            <a href="{% url 'financeiro:lista_licitacoes' %}" class="small-box-footer">Ver todas <i class="fas fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Segunda linha de processos -->
+      <div class="row">
+        <!-- Contratos -->
+        <div class="col-lg-3 col-6">
+          <div class="small-box bg-info">
+            <div class="inner">
+              <h3>{{ contratos_count }}</h3>
+              <p>Contratos</p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-file-contract"></i>
+            </div>
+            <a href="{% url 'financeiro:lista_contratos' %}" class="small-box-footer">Ver todos <i class="fas fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+
+        <!-- Prestações de Contas -->
+        <div class="col-lg-3 col-6">
+          <div class="small-box bg-secondary">
+            <div class="inner">
+              <h3>{{ prestacoes_contas_count }}</h3>
+              <p>Prestações de Contas</p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-balance-scale"></i>
+            </div>
+            <a href="{% url 'financeiro:lista_prestacoes_contas' %}" class="small-box-footer">Ver todas <i class="fas fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+
+        <!-- Fontes de Receita -->
+        <div class="col-lg-3 col-6">
+          <div class="small-box bg-light">
+            <div class="inner">
+              <h3>{{ fontes_receita_count }}</h3>
+              <p>Fontes de Receita</p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-hand-holding-usd"></i>
+            </div>
+            <a href="{% url 'financeiro:lista_fontes_receita' %}" class="small-box-footer">Ver todas <i class="fas fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+
+        <!-- Categorias de Despesa -->
+        <div class="col-lg-3 col-6">
+          <div class="small-box bg-dark">
+            <div class="inner">
+              <h3>{{ categorias_despesa_count }}</h3>
+              <p>Categorias de Despesa</p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-list"></i>
+            </div>
+            <a href="{% url 'financeiro:lista_categorias_despesa' %}" class="small-box-footer">Ver todas <i class="fas fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}
+
+{% block extra_scripts %}
+  <script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+  <script src="{% static 'plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+  <script src="{% static 'plugins/datatables-buttons/js/dataTables.buttons.min.js' %}"></script>
+{% endblock extra_scripts %}

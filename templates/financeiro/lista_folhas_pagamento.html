@@ -1,0 +1,41 @@
+<!-- financeiro/templates/financeiro/lista_folhas_pagamento.html -->
+{% extends 'layouts/base.html' %}
+
+{% block title %}Folha de Pagamento{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Folha de Pagamento</h1>
+    <a href="{% url 'financeiro:adicionar_folha_pagamento' %}" class="btn btn-primary mb-3">Adicionar Folha de Pagamento</a>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Nome do Funcionário</th>
+                <th>Cargo</th>
+                <th>Salário Bruto</th>
+                <th>Encargos</th>
+                <th>Salário Líquido</th>
+                <th>Data de Pagamento</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for folha in folhas_pagamento %}
+            <tr>
+                <td>{{ folha.nome_funcionario }}</td>
+                <td>{{ folha.cargo.nome }}</td>
+                <td>R$ {{ folha.salario_bruto }}</td>
+                <td>R$ {{ folha.encargos }}</td>
+                <td>R$ {{ folha.salario_liquido }}</td>
+                <td>{{ folha.data_pagamento|date:"d/m/Y" }}</td>
+                <td>
+                    <a href="{% url 'financeiro:detalhar_folha_pagamento' folha.id %}" class="btn btn-info btn-sm">Detalhes</a>
+                    <a href="{% url 'financeiro:editar_folha_pagamento' folha.id %}" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="{% url 'financeiro:deletar_folha_pagamento' folha.id %}" class="btn btn-danger btn-sm">Excluir</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

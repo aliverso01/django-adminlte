@@ -1,0 +1,39 @@
+<!-- financeiro/templates/financeiro/lista_licitacoes.html -->
+{% extends 'layouts/base.html' %}
+
+{% block title %}Licitações{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Licitações</h1>
+    <a href="{% url 'financeiro:adicionar_licitacao' %}" class="btn btn-primary mb-3">Adicionar Licitação</a>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Número do Processo</th>
+                <th>Objeto</th>
+                <th>Valor Estimado</th>
+                <th>Data de Abertura</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for licitacao in licitacoes %}
+            <tr>
+                <td>{{ licitacao.numero_processo }}</td>
+                <td>{{ licitacao.objeto }}</td>
+                <td>R$ {{ licitacao.valor_estimado }}</td>
+                <td>{{ licitacao.data_abertura|date:"d/m/Y" }}</td>
+                <td>{{ licitacao.status.status }}</td>
+                <td>
+                    <a href="{% url 'financeiro:detalhar_licitacao' licitacao.id %}" class="btn btn-info btn-sm">Detalhes</a>
+                    <a href="{% url 'financeiro:editar_licitacao' licitacao.id %}" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="{% url 'financeiro:deletar_licitacao' licitacao.id %}" class="btn btn-danger btn-sm">Excluir</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

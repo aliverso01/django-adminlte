@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "propostas",
     "votacao",
     "calendario",
+    "financeiro",
     'django_summernote',
     'crispy_forms',
     'crispy_bootstrap4',

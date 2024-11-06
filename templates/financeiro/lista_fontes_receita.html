@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Fontes de Receita{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Fontes de Receita</h2>
+  <a href="{% url 'financeiro:adicionar_fonte_receita' %}" class="btn btn-primary mb-3">Adicionar Fonte de Receita</a>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for fonte in fontes_receita %}
+      <tr>
+        <td>{{ fonte.nome }}</td>
+        <td>
+          <a href="{% url 'financeiro:editar_fonte_receita' fonte.id %}" class="btn btn-sm btn-warning">Editar</a>
+          <a href="{% url 'financeiro:deletar_fonte_receita' fonte.id %}" class="btn btn-sm btn-danger">Excluir</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock content %}

@@ -1,0 +1,36 @@
+<!-- financeiro/templates/financeiro/lista_despesas.html -->
+{% extends 'layouts/base.html' %}
+
+{% block title %}Despesas{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Despesas</h1>
+    <a href="{% url 'financeiro:adicionar_despesa' %}" class="btn btn-primary mb-3">Adicionar Despesa</a>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Descrição</th>
+                <th>Valor</th>
+                <th>Data de Pagamento</th>
+                <th>Categoria</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for despesa in despesas %}
+            <tr>
+                <td>{{ despesa.descricao }}</td>
+                <td>R$ {{ despesa.valor }}</td>
+                <td>{{ despesa.data_pagamento }}</td>
+                <td>{{ despesa.categoria.nome }}</td>
+                <td>
+                    <a href="{% url 'financeiro:editar_despesa' despesa.id %}" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="{% url 'financeiro:deletar_despesa' despesa.id %}" class="btn btn-danger btn-sm">Excluir</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}
