@@ -1,0 +1,16 @@
+{% extends 'layouts/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Adicionar/Editar Solicitação de Combustível{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>{{ view.title }}</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success mt-3">Salvar</button>
+        <a href="{% url 'frota:lista_solicitacoes_combustivel' %}" class="btn btn-secondary mt-3">Cancelar</a>
+    </form>
+</div>
+{% endblock content %}

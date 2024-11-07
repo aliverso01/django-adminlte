@@ -1,0 +1,15 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Detalhes da Pauta{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>{{ pauta.titulo }}</h1>
+    <p><strong>Data:</strong> {{ pauta.data }}</p>
+    <div>
+        <strong>Conteúdo:</strong>
+        {{ pauta.conteudo|safe }}
+    </div>
+    <a href="{% url 'atas:lista_pautas' %}" class="btn btn-secondary mt-3">Voltar</a>
+</div>
+{% endblock %}

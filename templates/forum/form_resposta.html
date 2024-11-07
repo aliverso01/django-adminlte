@@ -1,0 +1,16 @@
+{% extends 'layouts/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Responder ao Post{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Responder</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success mt-3">Enviar Resposta</button>
+        <a href="{% url 'forum:detalhes_post' post.id %}" class="btn btn-secondary mt-3">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

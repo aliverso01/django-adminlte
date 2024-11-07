@@ -1,0 +1,32 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Lista de Pautas{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Lista de Pautas</h1>
+    <a href="{% url 'atas:adicionar_pauta' %}" class="btn btn-primary mb-3">Adicionar Pauta</a>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Data</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pauta in pautas %}
+            <tr>
+                <td>{{ pauta.titulo }}</td>
+                <td>{{ pauta.data }}</td>
+                <td>
+                    <a href="{% url 'atas:detalhes_pauta' pauta.id %}" class="btn btn-info btn-sm">Detalhes</a>
+                    <a href="{% url 'atas:editar_pauta' pauta.id %}" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="{% url 'atas:deletar_pauta' pauta.id %}" class="btn btn-danger btn-sm">Excluir</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

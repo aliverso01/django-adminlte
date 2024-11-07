@@ -1,0 +1,38 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Solicitações de Combustível{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Solicitações de Combustível</h1>
+    <a href="{% url 'frota:adicionar_solicita_combustivel' %}" class="btn btn-primary mb-3">Adicionar Solicitação</a>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Veículo</th>
+                <th>Responsável</th>
+                <th>Data Saída</th>
+                <th>Data Retorno</th>
+                <th>Valor Total</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for solicitacao in solicitacoes %}
+            <tr>
+                <td>{{ solicitacao.veiculo }}</td>
+                <td>{{ solicitacao.responsavel }}</td>
+                <td>{{ solicitacao.data_saida|date:"d/m/Y H:i" }}</td>
+                <td>{{ solicitacao.data_retorno|date:"d/m/Y H:i" }}</td>
+                <td>R$ {{ solicitacao.valor_total }}</td>
+                <td>
+                    <a href="{% url 'frota:detalhes_solicita_combustivel' solicitacao.id %}" class="btn btn-info btn-sm">Detalhes</a>
+                    <a href="{% url 'frota:editar_solicita_combustivel' solicitacao.id %}" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="{% url 'frota:deletar_solicita_combustivel' solicitacao.id %}" class="btn btn-danger btn-sm">Excluir</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

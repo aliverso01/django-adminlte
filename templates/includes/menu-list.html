@@ -73,6 +73,46 @@
           </p>
         </a>
       </li>
+      <li class="nav-item">
+        <a href="{% url 'frota:lista_veiculos' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
+          <i class="nav-icon fas fa-file"></i>
+          <p>
+            Frotas
+          </p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{% url 'frota:lista_solicitacoes_combustivel' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
+          <i class="nav-icon fas fa-file"></i>
+          <p>
+            Solicita combustível
+          </p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{% url 'atas:lista_atas' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
+          <i class="nav-icon fas fa-file"></i>
+          <p>
+            Atas
+          </p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{% url 'atas:lista_pautas' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
+          <i class="nav-icon fas fa-file"></i>
+          <p>
+            Pautas
+          </p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{% url 'forum:lista_posts' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
+          <i class="nav-icon fas fa-file"></i>
+          <p>
+            Forum
+          </p>
+        </a>
+      </li>
 
     
   </ul>

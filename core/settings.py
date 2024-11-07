@@ -59,6 +59,9 @@ INSTALLED_APPS = [
     "votacao",
     "calendario",
     "financeiro",
+    "frota",
+    "atas",
+    "forum",  
     'django_summernote',
     'crispy_forms',
     'crispy_bootstrap4',
@@ -66,7 +69,6 @@ INSTALLED_APPS = [
 
 ]
 
-AUTH_USER_MODEL = 'home.CustomUser'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
@@ -103,6 +105,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "core.wsgi.application"
+AUTH_USER_MODEL = 'auth.User'
 
 
 # Database

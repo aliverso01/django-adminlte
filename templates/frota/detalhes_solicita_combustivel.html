@@ -1,0 +1,19 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Detalhes da Solicitação de Combustível{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Detalhes da Solicitação</h1>
+    <p><strong>Veículo:</strong> {{ solicitacao.veiculo }}</p>
+    <p><strong>Responsável:</strong> {{ solicitacao.responsavel }}</p>
+    <p><strong>Solicitante:</strong> {{ solicitacao.solicitante }}</p>
+    <p><strong>Objetivo:</strong> {{ solicitacao.objetivo }}</p>
+    <p><strong>Litros:</strong> {{ solicitacao.litros }}</p>
+    <p><strong>Valor por Litro:</strong> R$ {{ solicitacao.valor_litro }}</p>
+    <p><strong>Valor Total:</strong> R$ {{ solicitacao.valor_total }}</p>
+    <p><strong>Data de Saída:</strong> {{ solicitacao.data_saida|date:"d/m/Y H:i" }}</p>
+    <p><strong>Data de Retorno:</strong> {{ solicitacao.data_retorno|date:"d/m/Y H:i" }}</p>
+    <p><strong>Comprovante:</strong> <a href="{{ solicitacao.comprovante.url }}">Download</a></p>
+</div>
+{% endblock content %}

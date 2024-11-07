@@ -1,0 +1,15 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Excluir Ata{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Excluir Ata</h1>
+    <p>Tem certeza de que deseja excluir a ata <strong>{{ ata.titulo }}</strong>?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Excluir</button>
+        <a href="{% url 'atas:lista_atas' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

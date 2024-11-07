@@ -1,0 +1,31 @@
+{% extends 'layouts/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Detalhes do Post{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>{{ post.titulo }}</h1>
+    <p>{{ post.conteudo }}</p>
+    <small>Autor: {{ post.autor }} | Criado em: {{ post.criado_em }}</small>
+
+    <h2 class="mt-4">Respostas</h2>
+    <ul class="list-group">
+        {% for resposta in post.respostas.all %}
+        <li class="list-group-item mb-4">
+            <p>{{ resposta.conteudo }}</p>
+            <small>Autor: {{ resposta.autor }} | Criado em: {{ resposta.criado_em }}</small>
+        </li>
+        {% empty %}
+        <li class="list-group-item">Nenhuma resposta ainda.</li>
+        {% endfor %}
+    </ul>
+
+    <h3 class="mt-4">Responder</h3>
+    <form method="post" action="{% url 'forum:adicionar_resposta' post.id %}">
+        {% csrf_token %}
+        {{ resposta_form|crispy }}
+        <button type="submit" class="btn btn-success mt-3">Enviar Resposta</button>
+    </form>
+</div>
+{% endblock %}

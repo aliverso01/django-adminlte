@@ -1,6 +1,6 @@
 from django.db import models
 from propostas.models import Proposta
-from home.models import CustomUser
+from django.contrib.auth.models import User
 
 
 
@@ -10,7 +10,7 @@ class Votacao(models.Model):
     status = models.ForeignKey('StatusVotacao', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class StatusVotacao(models.Model):

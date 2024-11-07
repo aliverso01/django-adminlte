@@ -1,0 +1,32 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Lista de Atas{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Lista de Atas</h1>
+    <a href="{% url 'atas:adicionar_ata' %}" class="btn btn-primary mb-3">Adicionar Ata</a>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Data</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ata in atas %}
+            <tr>
+                <td>{{ ata.titulo }}</td>
+                <td>{{ ata.data }}</td>
+                <td>
+                    <a href="{% url 'atas:detalhes_ata' ata.id %}" class="btn btn-info btn-sm">Detalhes</a>
+                    <a href="{% url 'atas:editar_ata' ata.id %}" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="{% url 'atas:deletar_ata' ata.id %}" class="btn btn-danger btn-sm">Excluir</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

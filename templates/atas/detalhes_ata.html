@@ -1,0 +1,15 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Detalhes da Ata{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>{{ ata.titulo }}</h1>
+    <p><strong>Data:</strong> {{ ata.data }}</p>
+    <div>
+        <strong>Conteúdo:</strong>
+        {{ ata.conteudo|safe }}
+    </div>
+    <a href="{% url 'atas:lista_atas' %}" class="btn btn-secondary mt-3">Voltar</a>
+</div>
+{% endblock %}

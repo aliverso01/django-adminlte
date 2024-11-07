@@ -1,0 +1,14 @@
+{% extends 'layouts/base.html' %}
+{% block title %}Confirmar Exclusão{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Confirmar Exclusão</h1>
+    <p>Tem certeza de que deseja excluir o veículo "{{ object }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Excluir</button>
+        <a href="{% url 'frota:lista_veiculos' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock content %}

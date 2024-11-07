@@ -1,0 +1,39 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block title %}Lista de Veículos{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Lista de Veículos</h1>
+    <a href="{% url 'frota:adicionar_veiculo' %}" class="btn btn-primary mb-3">Adicionar Veículo</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Tipo</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Placa</th>
+                <th>Disponibilidade</th>
+                <th>Data de Aquisição</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for veiculo in veiculos %}
+            <tr>
+                <td>{{ veiculo.get_tipo_display }}</td>
+                <td>{{ veiculo.marca }}</td>
+                <td>{{ veiculo.modelo }}</td>
+                <td>{{ veiculo.placa }}</td>
+                <td>{{ veiculo.status_disponibilidade|yesno:"Disponível,Indisponível" }}</td>
+                <td>{{ veiculo.data_aquisicao }}</td>
+                <td>
+                    <a href="{% url 'frota:editar_veiculo' veiculo.id %}" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="{% url 'frota:deletar_veiculo' veiculo.id %}" class="btn btn-danger btn-sm">Excluir</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}
