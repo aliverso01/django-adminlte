@@ -3,216 +3,213 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView, View
 from .models import Receita, Despesa, FonteReceita, CategoriaDespesa, FolhaPagamento, Licitacao, Contrato, PrestacaoContas
 from .forms import ReceitaForm, DespesaForm, FolhaPagamentoForm, LicitacaoForm, ContratoForm, PrestacaoContasForm, FonteReceitaForm, CategoriaDespesaForm
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Views para Receita
-class ListaReceitasView(ListView):
+class ListaReceitasView(LoginRequiredMixin, ListView):
     model = Receita
     template_name = 'financeiro/lista_receitas.html'
     context_object_name = 'receitas'
 
-class AdicionarReceitaView(CreateView):
+class AdicionarReceitaView(LoginRequiredMixin, CreateView):
     model = Receita
     form_class = ReceitaForm
     template_name = 'financeiro/form_receita.html'
     success_url = reverse_lazy('financeiro:lista_receitas')
 
-class EditarReceitaView(UpdateView):
+class EditarReceitaView(LoginRequiredMixin, UpdateView):
     model = Receita
     form_class = ReceitaForm
     template_name = 'financeiro/form_receita.html'
     success_url = reverse_lazy('financeiro:lista_receitas')
 
-class DeletarReceitaView(DeleteView):
+class DeletarReceitaView(LoginRequiredMixin, DeleteView):
     model = Receita
     template_name = 'financeiro/confirmar_exclusao_receita.html'
     success_url = reverse_lazy('financeiro:lista_receitas')
 
 # Views para Despesa
-class ListaDespesasView(ListView):
+class ListaDespesasView(LoginRequiredMixin, ListView):
     model = Despesa
     template_name = 'financeiro/lista_despesas.html'
     context_object_name = 'despesas'
 
-class AdicionarDespesaView(CreateView):
+class AdicionarDespesaView(LoginRequiredMixin, CreateView):
     model = Despesa
     form_class = DespesaForm
     template_name = 'financeiro/form_despesa.html'
     success_url = reverse_lazy('financeiro:lista_despesas')
 
-class EditarDespesaView(UpdateView):
+class EditarDespesaView(LoginRequiredMixin, UpdateView):
     model = Despesa
     form_class = DespesaForm
     template_name = 'financeiro/form_despesa.html'
     success_url = reverse_lazy('financeiro:lista_despesas')
 
-class DeletarDespesaView(DeleteView):
+class DeletarDespesaView(LoginRequiredMixin, DeleteView):
     model = Despesa
     template_name = 'financeiro/confirmar_exclusao_despesa.html'
     success_url = reverse_lazy('financeiro:lista_despesas')
 
 # Views para Folha de Pagamento
-class ListaFolhasPagamentoView(ListView):
+class ListaFolhasPagamentoView(LoginRequiredMixin, ListView):
     model = FolhaPagamento
     template_name = 'financeiro/lista_folhas_pagamento.html'
     context_object_name = 'folhas_pagamento'
 
-class DetalhesFolhaPagamentoView(DetailView):
+class DetalhesFolhaPagamentoView(LoginRequiredMixin, DetailView):
     model = FolhaPagamento
     template_name = 'financeiro/detalhes_folha_pagamento.html'
     context_object_name = 'folha'
 
-class AdicionarFolhaPagamentoView(CreateView):
+class AdicionarFolhaPagamentoView(LoginRequiredMixin, CreateView):
     model = FolhaPagamento
     form_class = FolhaPagamentoForm
     template_name = 'financeiro/form_folha_pagamento.html'
     success_url = reverse_lazy('financeiro:lista_folhas_pagamento')
 
-class EditarFolhaPagamentoView(UpdateView):
+class EditarFolhaPagamentoView(LoginRequiredMixin, UpdateView):
     model = FolhaPagamento
     form_class = FolhaPagamentoForm
     template_name = 'financeiro/form_folha_pagamento.html'
     success_url = reverse_lazy('financeiro:lista_folhas_pagamento')
 
-class DeletarFolhaPagamentoView(DeleteView):
+class DeletarFolhaPagamentoView(LoginRequiredMixin, DeleteView):
     model = FolhaPagamento
     template_name = 'financeiro/confirmar_exclusao_folha_pagamento.html'
     success_url = reverse_lazy('financeiro:lista_folhas_pagamento')
 
 # Views para Licitação
-class ListaLicitacoesView(ListView):
+class ListaLicitacoesView(LoginRequiredMixin, ListView):
     model = Licitacao
     template_name = 'financeiro/lista_licitacoes.html'
     context_object_name = 'licitacoes'
 
-class DetalhesLicitacaoView(DetailView):
+class DetalhesLicitacaoView(LoginRequiredMixin, DetailView):
     model = Licitacao
     template_name = 'financeiro/detalhes_licitacao.html'
     context_object_name = 'licitacao'
 
-class AdicionarLicitacaoView(CreateView):
+class AdicionarLicitacaoView(LoginRequiredMixin, CreateView):
     model = Licitacao
     form_class = LicitacaoForm
     template_name = 'financeiro/form_licitacao.html'
     success_url = reverse_lazy('financeiro:lista_licitacoes')
 
-class EditarLicitacaoView(UpdateView):
+class EditarLicitacaoView(LoginRequiredMixin, UpdateView):
     model = Licitacao
     form_class = LicitacaoForm
     template_name = 'financeiro/form_licitacao.html'
     success_url = reverse_lazy('financeiro:lista_licitacoes')
 
-class DeletarLicitacaoView(DeleteView):
+class DeletarLicitacaoView(LoginRequiredMixin, DeleteView):
     model = Licitacao
     template_name = 'financeiro/confirmar_exclusao_licitacao.html'
     success_url = reverse_lazy('financeiro:lista_licitacoes')
 
 # Views para Contrato
-class ListaContratosView(ListView):
+class ListaContratosView(LoginRequiredMixin, ListView):
     model = Contrato
     template_name = 'financeiro/lista_contratos.html'
     context_object_name = 'contratos'
 
-class DetalhesContratoView(DetailView):
+class DetalhesContratoView(LoginRequiredMixin, DetailView):
     model = Contrato
     template_name = 'financeiro/detalhes_contrato.html'
     context_object_name = 'contrato'
 
-class AdicionarContratoView(CreateView):
+class AdicionarContratoView(LoginRequiredMixin, CreateView):
     model = Contrato
     form_class = ContratoForm
     template_name = 'financeiro/form_contrato.html'
     success_url = reverse_lazy('financeiro:lista_contratos')
 
-class EditarContratoView(UpdateView):
+class EditarContratoView(LoginRequiredMixin, UpdateView):
     model = Contrato
     form_class = ContratoForm
     template_name = 'financeiro/form_contrato.html'
     success_url = reverse_lazy('financeiro:lista_contratos')
 
-class DeletarContratoView(DeleteView):
+class DeletarContratoView(LoginRequiredMixin, DeleteView):
     model = Contrato
     template_name = 'financeiro/confirmar_exclusao_contrato.html'
     success_url = reverse_lazy('financeiro:lista_contratos')
 
 # Views para Prestação de Contas
-class ListaPrestacoesContasView(ListView):
+class ListaPrestacoesContasView(LoginRequiredMixin, ListView):
     model = PrestacaoContas
     template_name = 'financeiro/lista_prestacoes_contas.html'
     context_object_name = 'prestacoes_contas'
 
-class DetalhesPrestacaoContasView(DetailView):
+class DetalhesPrestacaoContasView(LoginRequiredMixin, DetailView):
     model = PrestacaoContas
     template_name = 'financeiro/detalhes_prestacao_contas.html'
     context_object_name = 'prestacao_contas'
 
-class AdicionarPrestacaoContasView(CreateView):
+class AdicionarPrestacaoContasView(LoginRequiredMixin, CreateView):
     model = PrestacaoContas
     form_class = PrestacaoContasForm
     template_name = 'financeiro/form_prestacao_contas.html'
     success_url = reverse_lazy('financeiro:lista_prestacoes_contas')
 
-class EditarPrestacaoContasView(UpdateView):
+class EditarPrestacaoContasView(LoginRequiredMixin, UpdateView):
     model = PrestacaoContas
     form_class = PrestacaoContasForm
     template_name = 'financeiro/form_prestacao_contas.html'
     success_url = reverse_lazy('financeiro:lista_prestacoes_contas')
 
-class DeletarPrestacaoContasView(DeleteView):
+class DeletarPrestacaoContasView(LoginRequiredMixin, DeleteView):
     model = PrestacaoContas
     template_name = 'financeiro/confirmar_exclusao_prestacao_contas.html'
     success_url = reverse_lazy('financeiro:lista_prestacoes_contas')
 
 # Views para FonteReceita
-class ListaFontesReceitaView(ListView):
+class ListaFontesReceitaView(LoginRequiredMixin, ListView):
     model = FonteReceita
     template_name = 'financeiro/lista_fontes_receita.html'
     context_object_name = 'fontes_receita'
 
-class AdicionarFonteReceitaView(CreateView):
+class AdicionarFonteReceitaView(LoginRequiredMixin, CreateView):
     model = FonteReceita
     form_class = FonteReceitaForm
     template_name = 'financeiro/form_fonte_receita.html'
     success_url = reverse_lazy('financeiro:lista_fontes_receita')
 
-class EditarFonteReceitaView(UpdateView):
+class EditarFonteReceitaView(LoginRequiredMixin, UpdateView):
     model = FonteReceita
     form_class = FonteReceitaForm
     template_name = 'financeiro/form_fonte_receita.html'
     success_url = reverse_lazy('financeiro:lista_fontes_receita')
 
-class DeletarFonteReceitaView(DeleteView):
+class DeletarFonteReceitaView(LoginRequiredMixin, DeleteView):
     model = FonteReceita
     template_name = 'financeiro/confirmar_exclusao_fonte_receita.html'
     success_url = reverse_lazy('financeiro:lista_fontes_receita')
 
-
 # Views para CategoriaDespesa
-class ListaCategoriasDespesaView(ListView):
+class ListaCategoriasDespesaView(LoginRequiredMixin, ListView):
     model = CategoriaDespesa
     template_name = 'financeiro/lista_categorias_despesa.html'
     context_object_name = 'categorias_despesa'
 
-class AdicionarCategoriaDespesaView(CreateView):
+class AdicionarCategoriaDespesaView(LoginRequiredMixin, CreateView):
     model = CategoriaDespesa
     form_class = CategoriaDespesaForm
     template_name = 'financeiro/form_categoria_despesa.html'
     success_url = reverse_lazy('financeiro:lista_categorias_despesa')
 
-class EditarCategoriaDespesaView(UpdateView):
+class EditarCategoriaDespesaView(LoginRequiredMixin, UpdateView):
     model = CategoriaDespesa
     form_class = CategoriaDespesaForm
     template_name = 'financeiro/form_categoria_despesa.html'
     success_url = reverse_lazy('financeiro:lista_categorias_despesa')
 
-class DeletarCategoriaDespesaView(DeleteView):
+class DeletarCategoriaDespesaView(LoginRequiredMixin, DeleteView):
     model = CategoriaDespesa
     template_name = 'financeiro/confirmar_exclusao_categoria_despesa.html'
     success_url = reverse_lazy('financeiro:lista_categorias_despesa')
 
-
-#dashboard
-
-class DashboardFinanceiroView(View):
+# Dashboard
+class DashboardFinanceiroView(LoginRequiredMixin, View):
     template_name = 'financeiro/dashboard.html'
 
     def get(self, request, *args, **kwargs):

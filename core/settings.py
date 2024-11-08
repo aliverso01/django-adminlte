@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     "frota",
     "atas",
     "forum",  
+    "marketing",
     'django_summernote',
     'crispy_forms',
     'crispy_bootstrap4',

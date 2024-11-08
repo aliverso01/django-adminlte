@@ -1,118 +1,134 @@
 {% load i18n static admin_adminlte %}
 
 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-    <!-- Add icons to the links using the .nav-icon class
-           with font-awesome or any other icon font library -->
+  <!-- Add icons to the links using the .nav-icon class
+       with font-awesome or any other icon font library -->
 
-    {% admin_get_menu as app_list %}
-    {% if app_list %}
-    {% for app in app_list %}
-    {% if app.has_perms and not app.pinned %}
+  {% admin_get_menu as app_list %}
+  {% if app_list %}
+  {% for app in app_list %}
+  {% if app.has_perms and not app.pinned %}
 
-      {% if app.models %}
-      <ul class="nav nav-treeview">
-        {% for model in app.models %}
-        {% if model.url %}
-        <li class="nav-item">
-          <a class="nav-link {% if 'bootstrap-tables' in segment or model.url in request.path|urlencode %} active {% endif %}"
-            href="{{ model.url }}">
-            <i class="far fa-circle nav-icon"></i>
-            <p>{{ model.label }}</p>
-          </a>
-        </li>
-        {% else %}
-        <li class="nav-item">{{ model.label }}</li>
-        {% endif %}
-        {% endfor %}
-      </ul>
-      {% endif %}
+    {% if app.models %}
+    <ul class="nav nav-treeview">
+    {% for model in app.models %}
+    {% if model.url %}
+    <li class="nav-item">
+      <a class="nav-link {% if 'bootstrap-tables' in segment or model.url in request.path|urlencode %} active {% endif %}"
+      href="{{ model.url }}">
+      <i class="far fa-circle nav-icon"></i>
+      <p>{{ model.label }}</p>
+      </a>
     </li>
+    {% else %}
+    <li class="nav-item">{{ model.label }}</li>
     {% endif %}
     {% endfor %}
+    </ul>
     {% endif %}
+  </li>
+  {% endif %}
+  {% endfor %}
+  {% endif %}
+</ul>
 
-    <!-- propostas -->
+<!-- Propostas -->
+<h5 class="nav-header">Propostas</h5>
+<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+  <li class="nav-item">
+    <a href="{% url 'lista_propostas' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
+    <i class="nav-icon fas fa-file-alt"></i>
+    <p>Propostas de Lei</p>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'lista_votacoes' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
+    <i class="nav-icon fas fa-vote-yea"></i>
+    <p>Protocolos</p>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'lista_status_votacoes' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
+    <i class="nav-icon fas fa-tasks"></i>
+    <p>Etapas Propostas</p>
+    </a>
+  </li>
+</ul>
 
-    <li class="nav-item">
-      <a href="{% url 'lista_propostas' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
-        <i class="nav-icon fas fa-file"></i>
-        <p>
-          Propostas de Lei
-        </p>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a href="{% url 'lista_votacoes' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
-        <i class="nav-icon fas fa-file"></i>
-        <p>
-          Protocolos
-        </p>
-      </a>
-    </li>
-      <li class="nav-item">
-        <a href="{% url 'lista_status_votacoes' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
-          <i class="nav-icon fas fa-file"></i>
-          <p>
-            Etapas Propostas
-          </p>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="{% url 'calendario' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
-          <i class="nav-icon fas fa-file"></i>
-          <p>
-            Agenda
-          </p>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="{% url 'financeiro:dashboard_financeiro' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
-          <i class="nav-icon fas fa-file"></i>
-          <p>
-            Financeiro
-          </p>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="{% url 'frota:lista_veiculos' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
-          <i class="nav-icon fas fa-file"></i>
-          <p>
-            Frotas
-          </p>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="{% url 'frota:lista_solicitacoes_combustivel' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
-          <i class="nav-icon fas fa-file"></i>
-          <p>
-            Solicita combustível
-          </p>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="{% url 'atas:lista_atas' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
-          <i class="nav-icon fas fa-file"></i>
-          <p>
-            Atas
-          </p>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="{% url 'atas:lista_pautas' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
-          <i class="nav-icon fas fa-file"></i>
-          <p>
-            Pautas
-          </p>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="{% url 'forum:lista_posts' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
-          <i class="nav-icon fas fa-file"></i>
-          <p>
-            Forum
-          </p>
-        </a>
-      </li>
+<!-- Agenda -->
+<h5 class="nav-header">Agenda</h5>
+<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+  <li class="nav-item">
+    <a href="{% url 'calendario' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
+    <i class="nav-icon fas fa-calendar-alt"></i>
+    <p>Agenda</p>
+    </a>
+  </li>
+</ul>
 
-    
-  </ul>
+<!-- Financeiro -->
+<h5 class="nav-header">Financeiro</h5>
+<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+  <li class="nav-item">
+    <a href="{% url 'financeiro:dashboard_financeiro' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
+    <i class="nav-icon fas fa-dollar-sign"></i>
+    <p>Financeiro</p>
+    </a>
+  </li>
+</ul>
+
+<!-- Frotas -->
+<h5 class="nav-header">Frotas</h5>
+<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+  <li class="nav-item">
+    <a href="{% url 'frota:lista_veiculos' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
+    <i class="nav-icon fas fa-car"></i>
+    <p>Frotas</p>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'frota:lista_solicitacoes_combustivel' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
+    <i class="nav-icon fas fa-gas-pump"></i>
+    <p>Solicita combustível</p>
+    </a>
+  </li>
+</ul>
+
+<!-- Atas -->
+<h5 class="nav-header">Atas</h5>
+<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+  <li class="nav-item">
+    <a href="{% url 'atas:lista_atas' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
+    <i class="nav-icon fas fa-file-alt"></i>
+    <p>Atas</p>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'atas:lista_pautas' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
+    <i class="nav-icon fas fa-list-alt"></i>
+    <p>Pautas</p>
+    </a>
+  </li>
+</ul>
+
+<!-- Forum -->
+<h5 class="nav-header">Forum</h5>
+<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+  <li class="nav-item"></li>
+    <a href="{% url 'forum:lista_posts' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
+    <i class="nav-icon fas fa-comments"></i>
+    <p>Forum</p>
+    </a>
+  </li>
+</ul>
+
+<!-- Marketing -->
+<h5 class="nav-header">Marketing</h5>
+<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+  <li class="nav-item">
+    <a href="{% url 'kanban_board' %}" class="nav-link {% if 'propostas' in parent %} active {% endif %}">
+    <i class="nav-icon fas fa-bullhorn"></i>
+    <p>Marketing</p>
+    </a>
+  </li>
+</ul>

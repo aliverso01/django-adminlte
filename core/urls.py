@@ -31,6 +31,7 @@ urlpatterns = [
     path('frota/', include('frota.urls')),
     path('atas/', include('atas.urls')),
     path('forum/', include('forum.urls')),
+    path('marketing/', include('marketing.urls')),
 
 
 

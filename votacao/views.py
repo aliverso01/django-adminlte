@@ -3,6 +3,7 @@ from .models import Votacao, StatusVotacao
 from .forms import VotacaoForm, StatusVotacaoForm
 from django.shortcuts import render, get_object_or_404, redirect
 
+
 # Create your views here.
 
 

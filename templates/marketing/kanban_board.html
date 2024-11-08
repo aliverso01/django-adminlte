@@ -1,0 +1,153 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block title %} Kanban Board {% endblock title %}
+
+{% block extrastyle %}
+<style>
+  .kanban {
+    display: flex;
+    flex-wrap: nowrap; /* Garante que os boards sejam dispostos horizontalmente */
+    overflow-x: auto;  /* Adiciona scroll horizontal se necessário */
+    padding: 10px;
+    gap: 10px; /* Espaçamento entre os boards */
+  }
+
+  .kanban .card-row {
+    flex: 0 0 300px; /* Largura fixa de 300px para cada board */
+    max-width: 300px;
+  }
+
+  /* Estilo do scroll para diferentes navegadores */
+  .kanban::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .kanban::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+  }
+
+  .kanban::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  @media (max-width: 768px) {
+    .kanban {
+      gap: 5px; /* Reduz o espaço entre os boards em telas menores */
+    }
+
+    .kanban .card-row {
+      flex: 0 0 250px; /* Ajusta a largura do board em telas menores */
+      max-width: 250px;
+    }
+  }
+</style>
+{% endblock extrastyle %}
+
+
+{% block content %}
+<section class="content-header">
+  <h1>Kanban Board</h1>
+  <!-- Botão para Criar Novo Board -->
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newBoardModal">
+    + Create New Board
+  </button>
+</section>
+
+<section class="content pb-3">
+  <div class="container-fluid h-100">
+    <div class="kanban">
+      {% for board in boards %}
+      <div class="card card-row card-{{ forloop.counter }}">
+        <div class="card-header">
+          <h3 class="card-title">{{ board.name }}</h3>
+          <button type="button" class="btn btn-tool float-right" data-toggle="modal" data-target="#newCardModal" data-board-id="{{ board.id }}">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+        <div class="card-body" data-board-id="{{ board.id }}">
+          {% for card in board.cards.all %}
+          <div class="card card-outline card-primary" data-card-id="{{ card.id }}">
+            <div class="card-header">
+              <h5 class="card-title">{{ card.title }}</h5>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Modal para Criação de Novo Board -->
+<div class="modal fade" id="newBoardModal" tabindex="-1" role="dialog" aria-labelledby="newBoardModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newBoardModalLabel">Create New Board</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="POST" action="{% url 'kanban_board' %}">
+        {% csrf_token %}
+        <div class="modal-body">
+          {{ board_form.as_p }}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="submit" name="board_submit" class="btn btn-primary">Create Board</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para Criação de Novo Card -->
+<div class="modal fade" id="newCardModal" tabindex="-1" role="dialog" aria-labelledby="newCardModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newCardModalLabel">Create New Card</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="POST" action="{% url 'kanban_board' %}">
+        {% csrf_token %}
+        <div class="modal-body">
+          {{ card_form.as_p }}
+          <input type="hidden" id="boardInput" name="board">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="submit" name="card_submit" class="btn btn-primary">Create Card</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block extra_scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Configurar modal para novo card com o ID do board
+    $('#newCardModal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget); // Botão que abriu o modal
+      var boardId = button.data('board-id'); // Extrai o ID do board
+      var modal = $(this);
+      modal.find('#boardInput').val(boardId);
+    });
+
+    // Scroll automático para o último board ao criar um novo
+    $('#newBoardModal form').on('submit', function() {
+      setTimeout(function() {
+        var kanbanContainer = document.querySelector('.kanban');
+        kanbanContainer.scrollLeft = kanbanContainer.scrollWidth;
+      }, 500); // Ajuste o tempo conforme necessário
+    });
+  });
+</script>
+{% endblock extra_scripts %}

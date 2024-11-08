@@ -1,5 +1,6 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Post, Resposta
 from .forms import PostForm, RespostaForm
 
@@ -19,7 +20,7 @@ class DetalhesPostView(DetailView):
         context['resposta_form'] = RespostaForm()
         return context
 
-class AdicionarPostView(CreateView):
+class AdicionarPostView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
     template_name = 'forum/form_post.html'
@@ -29,7 +30,7 @@ class AdicionarPostView(CreateView):
         form.instance.autor = self.request.user
         return super().form_valid(form)
 
-class AdicionarRespostaView(CreateView):
+class AdicionarRespostaView(LoginRequiredMixin, CreateView):
     model = Resposta
     form_class = RespostaForm
     template_name = 'forum/form_resposta.html'
