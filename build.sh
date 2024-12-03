@@ -19,3 +19,7 @@ python manage.py migrate
 envVars:
   - key: DJANGO_SETTINGS_MODULE
     value: core.settings
+
+
+echo "Arquivos estáticos coletados:"
+ls -la staticfiles/
