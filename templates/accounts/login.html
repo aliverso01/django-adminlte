@@ -1,24 +1,26 @@
 {% extends 'layouts/auth_base.html' %}
+{% load static %}
 
-{% block title %} Log in {% endblock title %}
+{% block title %} Entrar {% endblock title %}
 
 {% block bodyclass %} login-page {% endblock bodyclass %}
 
 {% block content %}
 <div class="login-box">
   <div class="login-logo">
-    <a href="/"><b>Admin</b>LTE</a>
+    <img src="{% static 'img/Logo_Civitas3.png' %}" class="brand-image img-fluid" alt="Logo"
+    style="max-height: 50px; margin-left: auto; margin-right: auto;">
   </div>
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
+      <p class="login-box-msg">Faça login para iniciar sua sessão</p>
 
       <form method="post">
         {% csrf_token %}
 
         {% if form.non_field_errors %}
-          {% for error in form.non_field_errors  %}
+          {% for error in form.non_field_errors %}
             <small class="text-danger mb-3">{{ error }}</small>
           {% endfor %}
         {% endif %}
@@ -39,13 +41,13 @@
             <div class="icheck-primary">
               <input type="checkbox" id="remember">
               <label for="remember">
-                Remember Me
+                Lembrar-me
               </label>
             </div>
           </div>
           <!-- /.col -->
           <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            <button type="submit" class="btn btn-primary btn-block">Entrar</button>
           </div>
           <!-- /.col -->
         </div>
@@ -53,21 +55,21 @@
 
       <!--
       <div class="social-auth-links text-center mb-3">
-        <p>- OR -</p>
+        <p>- OU -</p>
         <a href="#" class="btn btn-block btn-primary">
-          <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
+          <i class="fab fa-facebook mr-2"></i> Entrar usando Facebook
         </a>
         <a href="#" class="btn btn-block btn-danger">
-          <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
+          <i class="fab fa-google-plus mr-2"></i> Entrar usando Google+
         </a>
       </div>
       -->
       <!-- /.social-auth-links -->
 
       <p class="mt-5 mb-2 text-center">
-        <a href="{% url 'password_reset' %}">Reset Pass</a>
+        <a href="{% url 'password_reset' %}">Redefinir Senha</a>
         &bull;
-        <a href="{% url 'register' %}" class="text-center">Sign UP</a>
+        <a href="{% url 'register' %}" class="text-center">Registrar-se</a>
       </p>
     </div>
     <!-- /.login-card-body -->
