@@ -4,13 +4,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Post, Resposta
 from .forms import PostForm, RespostaForm
 
-class ListaPostsView(ListView):
+class ListaPostsView(LoginRequiredMixin, ListView):
     model = Post
     template_name = 'forum/lista_posts.html'
     context_object_name = 'posts'
     ordering = ['-criado_em']
 
-class DetalhesPostView(DetailView):
+class DetalhesPostView(LoginRequiredMixin, DetailView):
     model = Post
     template_name = 'forum/detalhes_post.html'
     context_object_name = 'post'
