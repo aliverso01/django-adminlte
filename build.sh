@@ -14,3 +14,8 @@ python manage.py collectstatic --no-input
 # Fazer as migrações
 python manage.py makemigrations
 python manage.py migrate
+
+
+envVars:
+  - key: DJANGO_SETTINGS_MODULE
+    value: core.settings
