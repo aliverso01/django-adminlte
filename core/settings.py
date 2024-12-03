@@ -36,7 +36,7 @@ DEBUG = False
 ALLOWED_HOSTS = ['*']
 
 # Add here your deployment HOSTS
-CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'http://localhost:5085', 'http://127.0.0.1:8000', 'http://127.0.0.1:5085']
+CSRF_TRUSTED_ORIGINS = ['*']
 
 #Render Context
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
@@ -113,16 +113,16 @@ AUTH_USER_MODEL = 'auth.User'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-if DEBUG == True:
 
-    DATABASES = {
-        'default': dj_database_url.config(
-            # Replace this value with your local database's connection string.
-            default='postgresql://civcam_user:fJULFjedEJGBM3sfgs9CiWKSipLkLPbX@dpg-ct7l8gdds78s7396q87g-a.oregon-postgres.render.com/civcam',
-            conn_max_age=600
-        )
-    }
-else:
+DATABASES = {
+    'default': dj_database_url.config(
+        # Replace this value with your local database's connection string.
+        default='postgresql://civcam_user:fJULFjedEJGBM3sfgs9CiWKSipLkLPbX@dpg-ct7l8gdds78s7396q87g-a.oregon-postgres.render.com/civcam',
+        conn_max_age=600
+    )
+}
+
+if not DEBUG:
     DATABASES = {
         'default': dj_database_url.config(
             # Replace this value with your local database's connection string.
@@ -183,8 +183,8 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-#if not DEBUG:
-#    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+if not DEBUG:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
