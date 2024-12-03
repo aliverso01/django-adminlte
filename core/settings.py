@@ -14,6 +14,7 @@ import os, random, string
 from pathlib import Path
 from dotenv import load_dotenv
 from str2bool import str2bool
+import dj_database_url
 
 load_dotenv()  # take environment variables from .env.
 
@@ -113,31 +114,30 @@ AUTH_USER_MODEL = 'auth.User'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DB_ENGINE   = os.getenv('DB_ENGINE'   , None)
-DB_USERNAME = os.getenv('DB_USERNAME' , None)
-DB_PASS     = os.getenv('DB_PASS'     , None)
-DB_HOST     = os.getenv('DB_HOST'     , None)
-DB_PORT     = os.getenv('DB_PORT'     , None)
-DB_NAME     = os.getenv('DB_NAME'     , None)
+if DEBUG == True:
 
-if DB_ENGINE and DB_NAME and DB_USERNAME:
-    DATABASES = { 
-      'default': {
-        'ENGINE'  : 'django.db.backends.' + DB_ENGINE, 
-        'NAME'    : DB_NAME,
-        'USER'    : DB_USERNAME,
-        'PASSWORD': DB_PASS,
-        'HOST'    : DB_HOST,
-        'PORT'    : DB_PORT,
-        }, 
+    DATABASES = {
+        'default': dj_database_url.config(
+            # Replace this value with your local database's connection string.
+            default='postgresql://civcam_user:fJULFjedEJGBM3sfgs9CiWKSipLkLPbX@dpg-ct7l8gdds78s7396q87g-a.oregon-postgres.render.com/civcam',
+            conn_max_age=600
+        )
     }
 else:
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': 'db.sqlite3',
-        }
+        'default': dj_database_url.config(
+            # Replace this value with your local database's connection string.
+            default='postgresql://civcam_user:fJULFjedEJGBM3sfgs9CiWKSipLkLPbX@dpg-ct7l8gdds78s7396q87g-a/civcam',
+            conn_max_age=600
+        )
     }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': 'db.sqlite3',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
